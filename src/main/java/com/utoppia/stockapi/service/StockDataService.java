@@ -1,6 +1,8 @@
 package com.utoppia.stockapi.service;
 
+import com.utoppia.stockapi.entity.StockData;
 import com.utoppia.stockapi.entity.dto.StockDataDto;
+import com.utoppia.stockapi.persistance.StockDataRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,21 +17,25 @@ import java.util.stream.Collectors;
 @Service
 public class StockDataService {
 
- /*   @Autowired
-    private CuentaRepository cuentaRepository;
-*/
-  /*  public List<StockDataDto> obtenerCuentasBancariasExterior(String symmbol) {
+    @Autowired
+    private StockDataRepository stockDataRepository;
 
-        List<GCuentaBancariaExterior> cuentasExt = cuentaExteriorRepository
+    public List<StockDataDto> getStockDataForSymbol(String symbol) {
+
+
+        List<StockData> stockDataList = stockDataRepository.findTop10BySymbolOrderByStockDataIdDesc(symbol);
+
+       /* List<GCuentaBancariaExterior> cuentasExt = cuentaExteriorRepository
                 .buscarCuentasBancariasExteriorPorPersona(tipoDocumento, numeroDocumento);
+
+        */
+
         ModelMapper modelMapper = new ModelMapper();
 
-        return cuentasExt.stream()
-                .map(entity -> modelMapper.map(entity, GCuentaBancariaExteriorDTO.class))
+        return stockDataList.stream()
+                .map(entity -> modelMapper.map(entity, StockDataDto.class))
                 .collect(Collectors.toList());
-    }*/
-
-    public void vacio(String symmbol){}
+    }
 
 
 }

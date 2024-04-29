@@ -5,6 +5,9 @@ import com.utoppia.stockapi.entity.dto.StockDataDto;
 import com.utoppia.stockapi.service.FinnHubService;
 import com.utoppia.stockapi.service.StockDataService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,17 +33,16 @@ public class StockController {
 
     @Operation(summary = "Retrieve stock data")
     @GetMapping()
-    public ResponseEntity<Void/*List<StockDataDto>*/> getStockData(
-            @RequestParam String symbol) {
+    public ResponseEntity<List<StockDataDto>> getStockData(
+            @RequestParam(required = true) String symbol ) {
 
-        //return ResponseEntity.ok(stockDataService.vacio(symbol);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok(stockDataService.getStockDataForSymbol(symbol));
     }
 
     @Operation(summary = "Update stock Data")
     @PostMapping()
     public ResponseEntity<Void> updateStockData(
-            @RequestParam String symbol) {
+            @RequestParam(required = true) String symbol) {
 
         finnHubService.updateStockDataWithFinnHubQuote(symbol);
         return new ResponseEntity<>(HttpStatus.OK);

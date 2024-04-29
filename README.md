@@ -72,7 +72,11 @@ When in local environment you will have access to the H2 Database console :
 http://localhost:8091/api/h2-console/
 ```
 
+## Documentation
+You'll find more information about the endpoints of this api in: 
 
-
+```
+http://localhost:8091/api/swagger-ui/index.html
+```
 
 

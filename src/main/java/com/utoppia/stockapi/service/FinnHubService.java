@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class FinnHubService {
@@ -60,6 +62,11 @@ public class FinnHubService {
 
         QuoteResponse response =  this.getStockQuote(symbol);
         logger.debug(response.toString());
+
+        //When symbol not found, Finnhub return all json's field with null or zeroes
+        if(Double.compare(response.getCurrentPrice(), 0) == 0 && response.getTimestamp() == 0){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
 
         StockData stockData = mapper.map(response, StockData.class);
         stockData.setSymbol(symbol);

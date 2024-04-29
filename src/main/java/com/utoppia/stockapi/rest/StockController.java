@@ -44,8 +44,13 @@ public class StockController {
 
     @Operation(summary = "Update stock Data")
     @PostMapping()
+    @ResponseBody
     public ResponseEntity<Void> updateStockData(
             @RequestParam(required = true) String symbol) {
+
+        if(symbol.isBlank()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
 
         finnHubService.updateStockDataWithFinnHubQuote(symbol);
         return new ResponseEntity<>(HttpStatus.OK);

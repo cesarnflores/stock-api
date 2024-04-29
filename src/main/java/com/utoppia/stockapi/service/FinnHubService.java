@@ -4,6 +4,8 @@ import com.utoppia.stockapi.entity.QuoteResponse;
 import com.utoppia.stockapi.entity.StockData;
 import com.utoppia.stockapi.persistance.StockDataRepository;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -29,6 +31,7 @@ public class FinnHubService {
     @Autowired
     private ModelMapper mapper;
 
+    private static Logger logger = LoggerFactory.getLogger(FinnHubService.class);
     /**
      * Get stock quote
      * @param symbol
@@ -56,24 +59,15 @@ public class FinnHubService {
     public void updateStockDataWithFinnHubQuote(final String symbol){
 
         QuoteResponse response =  this.getStockQuote(symbol);
-        System.out.println(response);
+        logger.debug(response.toString());
 
         StockData stockData = mapper.map(response, StockData.class);
         stockData.setSymbol(symbol);
 
-        System.out.println(stockData);
+        logger.debug(stockData.toString());
 
         stockDataRepository.save(stockData);
 
-        //updateDataBase
-
-
-
     }
-  /*  public Mono<Details> someRestCall(String name) {
-        return this.webClient.get().url("/{name}/details", name)
-                .retrieve().bodyToMono(Details.class);
-    }
-*/
 
 }

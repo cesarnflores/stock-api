@@ -22,14 +22,7 @@ public class StockDataService {
 
     public List<StockDataDto> getStockDataForSymbol(String symbol) {
 
-
         List<StockData> stockDataList = stockDataRepository.findTop10BySymbolOrderByStockDataIdDesc(symbol);
-
-       /* List<GCuentaBancariaExterior> cuentasExt = cuentaExteriorRepository
-                .buscarCuentasBancariasExteriorPorPersona(tipoDocumento, numeroDocumento);
-
-        */
-
         ModelMapper modelMapper = new ModelMapper();
 
         return stockDataList.stream()
